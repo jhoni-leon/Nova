@@ -93,7 +93,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Modelos adicionales
-const Post = require('./models/Post');
+const Post = require('./models/post');
 const Friend = require('./models/Friend');
 
 // Ruta principal
