@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reacciones</title>
+</head>
+<body>
+    <h1>Reacciones al Post</h1>
+    <p>Título: <%= post.title %></p>
+    <p>Likes: <%= post.likes %></p>
+    <p>Comentarios: <%= post.comments.length %></p>
+    <ul>
+        <% post.comments.forEach(comment => { %>
+            <li><%= comment %></li>
+        <% }) %>
+    </ul>
+</body>
+</html>

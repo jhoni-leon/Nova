@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        /* Reset y estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: black;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        /* Video de fondo */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        /* Animación inicial del texto "Nova" */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeOut 2s ease-in-out 2s forwards;
+        }
+
+        .preloader h1 {
+            font-size: 6rem;
+            color: #007bff;
+            text-shadow: 0 0 10px #007bff, 0 0 20px #007bff;
+            animation: zoomIn 2s ease-in-out forwards;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Contenedor principal */
+        .container {
+            opacity: 0;
+            animation: fadeIn 1.5s ease-in-out 3.5s forwards;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            font-size: 4rem;
+            color: #007bff;
+            text-shadow: 0 0 10px #007bff, 0 0 20px #007bff;
+            margin-bottom: 20px;
+        }
+
+        p.subtitle {
+            font-size: 1.5rem;
+            color: #ccc;
+            margin-bottom: 40px;
+        }
+
+        /* Botones */
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-google {
+            background: #db4437;
+            color: white;
+            box-shadow: 0 5px 15px rgba(219, 68, 55, 0.4);
+        }
+
+        .btn-google:hover {
+            background: #b53a2e;
+            box-shadow: 0 10px 30px rgba(219, 68, 55, 0.6);
+        }
+
+        .btn-apple {
+            background: #333;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-apple:hover {
+            background: black;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .btn-login {
+            background: #1da1f2;
+            color: white;
+            box-shadow: 0 5px 15px rgba(29, 161, 242, 0.4);
+        }
+
+        .btn-login:hover {
+            background: #004080;
+            box-shadow: 0 10px 30px rgba(29, 161, 242, 0.6);
+        }
+
+        .btn-register {
+            background: #17bf63;
+            color: white;
+            box-shadow: 0 5px 15px rgba(23, 191, 99, 0.4);
+        }
+
+        .btn-register:hover {
+            background: #004d40;
+            box-shadow: 0 10px 30px rgba(23, 191, 99, 0.6);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            font-size: 1rem;
+            color: #555;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <!-- Video de fondo -->
+    <video class="video-bg" autoplay muted loop>
+        <source src="/videos/video.mp4" type="video/mp4">
+        Tu navegador no soporta videos HTML5.
+    </video>
+
+    <!-- Animación inicial -->
+    <div class="preloader">
+        <h1>Nova</h1>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <h1>Bienvenido a Nova</h1>
+        <p class="subtitle">El futuro está en tus manos.</p>
+        <div class="buttons">
+            <!-- Enlaces a rutas específicas en el servidor -->
+            <a href="/auth/google" class="btn btn-google">
+                <i class="fab fa-google"></i> Regístrate con Google
+            </a>
+            <a href="/auth/apple" class="btn btn-apple">
+                <i class="fab fa-apple"></i> Regístrate con Apple
+            </a>
+            <a href="/login" class="btn btn-login">
+                <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+            </a>
+            <a href="/register" class="btn btn-register">
+                <i class="fas fa-user-plus"></i> Crea una cuenta
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        Creado por Jhoni León
+    </footer>
+</body>
+
+</html>

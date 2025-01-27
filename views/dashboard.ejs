@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Bienvenido</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script defer src="/scripts.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Menú de navegación izquierdo -->
+        <div class="left-menu">
+            <div class="logo">
+                <h1>Nova</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/dashboard">Casa</a></li>
+                    <li><a href="/profile">Perfil</a></li>
+                    <li><a href="/explore">Explorer</a></li>
+                    <li><a href="/notifications">Notificaciones</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Parte central con bienvenida y formulario para publicar -->
+        <div class="main-content">
+            <div class="welcome">
+                <h2>Bienvenido, <%= user.displayName %></h2>
+            </div>
+
+            <!-- Formulario para crear una nueva publicación -->
+            <div class="new-post">
+                <form action="/posts" method="POST">
+                    <textarea name="content" placeholder="Escribe algo..." required></textarea>
+                    <button type="submit">Publicar</button>
+                </form>
+            </div>
+
+            <!-- Lista de publicaciones -->
+            <div class="posts">
+                <% posts.forEach(post => { %>
+                    <div class="post">
+                        <p><strong><%= post.author.displayName %>:</strong> <%= post.content %></p>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <!-- Lista de usuarios en la parte derecha -->
+        <div class="right-sidebar">
+            <h3>Usuarios Registrados</h3>
+            <ul>
+                <% friends.forEach(friend => { %>
+                    <li><%= friend.friend.displayName %></li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

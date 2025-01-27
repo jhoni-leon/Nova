@@ -1,0 +1,55 @@
+<!-- /views/home.ejs -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova - Página de Inicio</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <header class="navbar">
+        <div class="logo">
+            <h1>Nova</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/home">Inicio</a></li>
+                <li><a href="/friends">Amigos</a></li>
+                <li><a href="/messages">Mensajes</a></li>
+                <li><a href="/logout">Cerrar sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+        <section class="welcome-section">
+            <h2>Bienvenido, <%= user.username %>!</h2>
+            <p>¡Estamos encantados de tenerte en Nova! ¿Qué estás pensando?</p>
+            <form action="/posts" method="POST">
+                <textarea name="content" placeholder="Escribe algo..." required></textarea>
+                <button type="submit">Publicar</button>
+            </form>
+        </section>
+
+        <section class="posts-section">
+            <h3>Últimas Publicaciones</h3>
+            <ul>
+                <% posts.forEach(post => { %>
+                    <li>
+                        <p><strong><%= post.author.username %>:</strong> <%= post.content %></p>
+                        <p><small>Publicado el <%= post.createdAt.toDateString() %></small></p>
+                    </li>
+                <% }) %>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Nova. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
