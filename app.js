@@ -40,10 +40,13 @@ passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => {
-        done(err, user);
-    });
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await User.findById(id);
+        done(null, user);  // Pasar 'null' como primer parámetro para indicar que no hubo error
+    } catch (error) {
+        done(error, null);  // Pasar el error en caso de que falle la búsqueda
+    }
 });
 
 // Configuración de Google Strategy

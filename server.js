@@ -7,6 +7,14 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const app = express();
 
+// Detectar entorno
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Configurar el URL de callback dinámicamente
+const callbackURL = isProduction
+    ? 'https://nova-huml.onrender.com/' // Dominio público en producción
+    : 'http://localhost:3001/auth/google/callback'; // Desarrollo local
+
 // Conectar a MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -42,10 +50,10 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = await User.findById(id); // Solución al problema del callback
-        done(null, user); // Pasar el usuario si se encuentra
+        const user = await User.findById(id);
+        done(null, user);
     } catch (err) {
-        done(err, null); // Manejar errores si ocurren
+        done(err, null);
     }
 });
 
@@ -53,21 +61,25 @@ passport.deserializeUser(async (id, done) => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK_URL,
+    callbackURL, // Usar la URL dinámica
 }, async (accessToken, refreshToken, profile, done) => {
-    // Buscar usuario en la base de datos o crearlo
-    const existingUser = await User.findOne({ googleId: profile.id });
-    if (existingUser) {
-        return done(null, existingUser);
+    try {
+        // Buscar usuario en la base de datos o crearlo
+        const existingUser = await User.findOne({ googleId: profile.id });
+        if (existingUser) {
+            return done(null, existingUser);
+        }
+        const newUser = new User({
+            googleId: profile.id,
+            displayName: profile.displayName,
+            email: profile.emails[0].value,
+            profilePhoto: profile.photos[0].value,
+        });
+        await newUser.save();
+        done(null, newUser);
+    } catch (error) {
+        done(error, null);
     }
-    const newUser = new User({
-        googleId: profile.id,
-        displayName: profile.displayName,
-        email: profile.emails[0].value,
-        profilePhoto: profile.photos[0].value,
-    });
-    await newUser.save();
-    done(null, newUser);
 }));
 
 // Configuración de EJS
@@ -76,11 +88,11 @@ app.set('view engine', 'ejs');
 // Archivos estáticos
 app.use(express.static('public'));
 
-// Configuración de middleware para procesar los formularios
+// Middleware para procesar los formularios
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Rutas definidas aquí
+// Modelos adicionales
 const Post = require('./models/Post');
 const Friend = require('./models/Friend');
 
@@ -147,6 +159,7 @@ app.get('/logout', (req, res, next) => {
 });
 
 // Iniciar servidor
-app.listen(3001, () => {
-    console.log('Servidor corriendo en http://localhost:3001');
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en ${isProduction ? 'https://nova-huml.onrender.com' : `http://localhost:${PORT}`}`);
 });
